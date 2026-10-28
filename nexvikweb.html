@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexVik - Accesorios para Celulares de Alta Gama</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              navy: {
+                800: '#1e293b',
+                900: '#0f172a',
+                950: '#0b1329',
+              },
+              vibrant: {
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+              }
+            },
+            boxShadow: {
+              'neon': '0 0 20px rgba(37, 99, 235, 0.4)',
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b1329;
+            color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(37, 99, 235, 0.3);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1329;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-navy-950">
+
+    <!-- HEADER TRASLÚCIDO -->
+    <header class="fixed top-0 left-0 w-full z-40 glass-panel border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Logo NexVik -->
+            <a href="#inicio" class="flex items-center gap-3 group" aria-label="NexVik, ir al inicio">
+                <img src="nexvik-logo.jpeg" alt="Logo NexVik: Tecnología que conecta" class="h-14 w-14 rounded-xl object-cover ring-1 ring-white/20 shadow-neon group-hover:scale-105 transition-transform duration-300">
+                <div>
+                    <span class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-1">
+                        NEX<span class="text-cyan-400">VIK</span>
+                    </span>
+                    <span class="text-[9px] uppercase tracking-widest text-slate-400 block -mt-1 font-semibold">Tecnología que conecta</span>
+                </div>
+            </a>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex flex-1 max-w-md relative">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Buscar fundas, audifonos, tripodes..." 
+                    class="w-full bg-navy-900/80 text-sm text-slate-200 placeholder-slate-400 rounded-full py-2.5 pl-11 pr-4 border border-slate-700/60 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
+                >
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+
+            <!-- Botones de Acción Header -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300">
+                    <a href="#catalogo" class="hover:text-cyan-400 transition-colors">Catálogo</a>
+                    <a href="#contacto" class="hover:text-cyan-400 transition-colors">Contacto</a>
+                </nav>
+
+                <button id="open-favs-btn" onclick="toggleFavsDrawer()" class="relative p-2.5 rounded-xl bg-navy-800/80 border border-slate-700/60 text-rose-400 hover:text-rose-300 hover:border-rose-400/50 transition-all">
+                    <i class="fa-solid fa-heart text-base"></i>
+                    <span id="favs-badge" class="absolute -top-1.5 -right-1.5 bg-rose-500 text-white font-bold px-1.5 py-0.2 rounded-full text-[10px] min-w-[18px] text-center">0</span>
+                </button>
+
+                <div id="auth-container">
+                    <button id="open-login-btn" onclick="openAuthModal()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-navy-800/80 border border-slate-700/60 text-slate-200 hover:text-white hover:border-cyan-400/50 text-xs font-semibold transition-all">
+                        <i class="fa-regular fa-user text-sm"></i>
+                        <span class="hidden sm:inline">Iniciar Sesión</span>
+                    </button>
+                </div>
+
+                <button id="open-cart-btn" onclick="toggleCartDrawer()" class="relative flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-vibrant-600 to-vibrant-700 hover:from-vibrant-500 hover:to-vibrant-600 text-white font-semibold text-xs sm:text-sm shadow-neon transition-all duration-300">
+                    <i class="fa-solid fa-bag-shopping text-base"></i>
+                    <span class="hidden sm:inline">Carrito</span>
+                    <span id="cart-badge" class="bg-cyan-400 text-navy-950 font-bold px-2 py-0.5 rounded-full text-xs min-w-[20px] text-center">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="pt-32 pb-12 md:pt-40 md:pb-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-6">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        Tecnología que conecta
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] mb-6">
+                        Potencia y estilo para tu smartphone con <span class="text-gradient">NexVik</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed mb-8">
+                        Encuentra accesorios prácticos para proteger, cargar y disfrutar más tu celular. Explora opciones para tu día a día y elige con confianza.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#catalogo" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-vibrant-600 via-vibrant-500 to-cyan-500 hover:brightness-110 text-white font-bold shadow-neon transition-all text-center flex items-center justify-center gap-3">
+                            <span>Explorar accesorios</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <div class="relative glass-panel rounded-3xl overflow-hidden p-3 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1580910051074-3eb694886505?q=80&w=800&auto=format&fit=crop" alt="NexVik Smartphone Accessories" class="w-full h-[380px] object-cover rounded-2xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIENDA / CATÁLOGO PRINCIPAL -->
+    <section class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-8" aria-labelledby="guia-title">
+        <div class="rounded-3xl border border-cyan-400/15 bg-gradient-to-br from-slate-900 to-blue-950/60 p-6 md:p-8 grid md:grid-cols-[1fr_auto] gap-6 items-center">
+            <div><p class="text-xs font-bold uppercase tracking-[.18em] text-cyan-300 mb-2">Guia rapida NexVik</p><h2 id="guia-title" class="text-xl md:text-2xl font-extrabold text-white">Que accesorio te sirve?</h2><p class="mt-2 text-sm text-slate-300 max-w-2xl">Para grabar videos o hacer lives, compara el tamano del aro, los modos de luz y la altura del tripode. Para escuchar musica, revisa si prefieres audifonos in-ear o de diadema y verifica la compatibilidad Bluetooth. En fundas, confirma siempre el modelo exacto del celular antes de elegir color y diseno.</p></div>
+            <a href="#catalogo" class="inline-flex items-center justify-center gap-2 rounded-xl border border-cyan-300/30 px-5 py-3 text-sm font-bold text-cyan-200 hover:bg-cyan-400/10 transition-colors">Ver el catálogo <i class="fa-solid fa-arrow-down"></i></a>
+        </div>
+    </section>
+
+    <main id="catalogo" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 pb-6 border-b border-slate-800">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Catálogo de Productos</h2>
+                <p class="text-slate-400 text-sm mt-1">Precios referenciales de tiendas peruanas; pueden cambiar según oferta y disponibilidad.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- SIDEBAR FILTROS -->
+            <aside class="lg:col-span-1 space-y-6">
+                <!-- Filtro por Categorías -->
+                <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-cyan-400 text-sm"></i> Categorías
+                    </h3>
+                    <div id="category-filters" class="space-y-1.5"></div>
+                </div>
+
+                <!-- Filtro por Rango de Precios -->
+                <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-tag text-cyan-400 text-sm"></i> Precio Máximo
+                        </h3>
+                        <span id="price-range-val" class="text-sm font-extrabold text-cyan-400">S/ 500.00</span>
+                    </div>
+                    <div class="space-y-2">
+                        <input type="range" id="price-range" min="10" max="500" step="1" value="500" class="w-full accent-cyan-400 cursor-pointer">
+                        <div class="flex justify-between text-[11px] text-slate-400 font-semibold">
+                            <span>S/ 10.00</span>
+                            <span>S/ 500.00</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- PRODUCT GRID AREA -->
+            <section class="lg:col-span-3">
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="no-products-msg" class="hidden text-center py-12 text-slate-400 text-sm">
+                    <i class="fa-solid fa-box-open text-3xl mb-3 text-slate-600"></i>
+                    <p>No se encontraron productos en esta categoría o rango de precios.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- DRAWER DE FAVORITOS -->
+    <div id="favs-drawer-overlay" onclick="toggleFavsDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity opacity-0 pointer-events-none"></div>
+    <div id="favs-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-navy-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-heart text-rose-500 text-xl"></i>
+                <h3 class="text-lg font-bold text-white">Tus Favoritos</h3>
+            </div>
+            <button onclick="toggleFavsDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg bg-navy-800">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <div id="favs-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+    </div>
+
+    <!-- DRAWER DEL CARRITO -->
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity opacity-0 pointer-events-none"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-navy-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-bag-shopping text-cyan-400 text-xl"></i>
+                <h3 class="text-lg font-bold text-white">Tu Carrito de Compras</h3>
+            </div>
+            <button onclick="toggleCartDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg bg-navy-800">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+
+        <div class="p-5 border-t border-slate-800 bg-navy-950/80 space-y-4">
+            <div class="flex justify-between items-center text-slate-300 text-sm">
+                <span>Subtotal:</span>
+                <span id="cart-total-price" class="text-xl font-extrabold text-white">S/ 0.00</span>
+            </div>
+            <button onclick="checkoutCart()" class="w-full py-3 bg-gradient-to-r from-vibrant-600 to-cyan-500 hover:brightness-110 text-white font-bold rounded-xl text-sm shadow-neon transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>Finalizar pedido</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT: PREPARA EL PEDIDO Y EL BORRADOR DE CORREO -->
+    <div id="checkout-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4" onclick="closeCheckoutModal()">
+        <section class="bg-navy-900 border border-slate-700 rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto p-6 sm:p-8 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="checkout-title" onclick="event.stopPropagation()">
+            <div class="flex items-start justify-between gap-4 mb-5">
+                <div><p class="text-xs uppercase tracking-widest text-cyan-300 font-bold">Pago anticipado</p><h2 id="checkout-title" class="text-2xl font-extrabold text-white mt-1">Completa tu pedido</h2></div>
+                <button type="button" onclick="closeCheckoutModal()" class="p-2 text-slate-400 hover:text-white rounded-lg bg-navy-800" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-sm text-slate-300 mb-5">El pedido se prepara por correo para que NexVik confirme disponibilidad y costo de envio antes de que realices el pago total.</p>
+            <form id="order-form" class="space-y-4">
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <label class="text-xs text-slate-300">Nombre completo<input id="order-name" required autocomplete="name" class="mt-1 w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white" /></label>
+                    <label class="text-xs text-slate-300">Correo de contacto<input id="order-email" type="email" required autocomplete="email" class="mt-1 w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white" /></label>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <label class="text-xs text-slate-300">WhatsApp / telefono<input id="order-phone" type="tel" required autocomplete="tel" class="mt-1 w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white" /></label>
+                    <label class="text-xs text-slate-300">Ciudad y direccion de entrega<input id="order-address" required autocomplete="street-address" class="mt-1 w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white" /></label>
+                </div>
+                <fieldset class="space-y-2">
+                    <legend class="text-sm font-bold text-white">Metodo de pago preferido</legend>
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-700 bg-navy-950 text-sm text-slate-200"><input type="radio" name="payment-method" value="Yape" checked class="accent-cyan-400"> Yape al 942 107 558</label>
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-700 bg-navy-950 text-sm text-slate-200"><input type="radio" name="payment-method" value="Transferencia BCP" class="accent-cyan-400"> Transferencia bancaria BCP</label>
+                </fieldset>
+                <div class="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm text-slate-300">
+                    <p id="payment-instructions"><strong class="text-white">Yape:</strong> numero 942 107 558. Espera la confirmacion del total final antes de pagar.</p>
+                    <p class="mt-2"><strong class="text-white">Productos:</strong> <span id="checkout-subtotal">S/ 0.00</span></p>
+                    <p class="mt-1 text-xs text-slate-400">El envio se cotiza segun el destino. Para BCP, NexVik te enviara los datos de cuenta por correo o WhatsApp. No se confirmara el pedido hasta validar el pago total.</p>
+                </div>
+                <div id="order-status" class="hidden rounded-xl bg-amber-400/10 border border-amber-300/20 p-3 text-xs text-amber-100" aria-live="polite"></div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-vibrant-600 to-cyan-500 text-white font-bold text-sm hover:brightness-110"><i class="fa-regular fa-envelope mr-2"></i>Preparar correo del pedido</button>
+            </form>
+            <p class="text-[11px] text-slate-500 mt-4">El correo se abrira en tu aplicacion de email. Revisa y envia el borrador; luego podras adjuntar el comprobante del pago.</p>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="contacto" class="mt-20 border-t border-slate-800 bg-navy-950/80 backdrop-blur-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <img src="nexvik-logo.jpeg" alt="Logo NexVik" class="w-10 h-10 rounded-lg object-cover ring-1 ring-white/20">
+                        <span class="text-xl font-extrabold text-white">NEX<span class="text-cyan-400">VIK</span></span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Especialistas en accesorios de tecnología y protección avanzada para smartphones.
+                    </p>
+                    <div class="pt-2 space-y-2 text-xs text-slate-300">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-location-dot text-cyan-400 text-sm w-4"></i>
+                            <span><strong>Ubicación:</strong> Huaral, Lima, Perú (Envíos a todo el país)</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-envelope text-cyan-400 text-sm w-4"></i>
+                            <span><strong>Correo Gmail:</strong> <a href="mailto:nexvik.pe@gmail.com" class="text-cyan-400 hover:underline">nexvik.pe@gmail.com</a></span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-phone text-cyan-400 text-sm w-4"></i>
+                            <span><strong>WhatsApp:</strong> <a href="https://wa.me/51942107558" target="_blank" class="text-cyan-400 hover:underline">+51 942 107 558</a></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 space-y-4">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Síguenos en Redes</h3>
+                    <div class="flex flex-col gap-3 pt-1">
+                        <a href="https://www.facebook.com/profile.php?id=61595138950920" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl bg-navy-900 border border-slate-800 hover:border-cyan-400/50 hover:bg-navy-800 transition-all group">
+                            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                                <i class="fa-brands fa-facebook-f text-base"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-white block">Facebook Oficial</span>
+                                <span class="text-[10px] text-slate-400">@nexvik</span>
+                            </div>
+                        </a>
+                        <a href="https://www.tiktok.com/@nexvik.pe" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl bg-navy-900 border border-slate-800 hover:border-cyan-400/50 hover:bg-navy-800 transition-all group">
+                            <div class="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                                <i class="fa-brands fa-tiktok text-base"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-white block">TikTok Oficial</span>
+                                <span class="text-[10px] text-slate-400">@nexvik.pe</span>
+                            </div>
+                        </a>
+                        <a href="https://www.instagram.com/nexvik.pe?stkn=MWRrYmNxNnd6a3Y3Yg==" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl bg-navy-900 border border-slate-800 hover:border-cyan-400/50 hover:bg-navy-800 transition-all group">
+                            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white group-hover:scale-105 transition-transform">
+                                <i class="fa-brands fa-instagram text-base"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-white block">Instagram Oficial</span>
+                                <span class="text-[10px] text-slate-400">@nexvik.pe</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 space-y-4">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Envíanos tu Mensaje</h3>
+                    <form id="contact-form" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input id="contact-name" type="text" required placeholder="Tu Nombre" class="w-full bg-navy-900 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+                            <input id="contact-email" type="email" required placeholder="Tu Correo Electrónico" class="w-full bg-navy-900 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+                        </div>
+                        <textarea id="contact-message" required rows="3" placeholder="Escribe tu mensaje o consulta aquí..." class="w-full bg-navy-900 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 resize-none"></textarea>
+                        <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-vibrant-600 to-cyan-500 text-white font-bold rounded-xl text-xs shadow-neon transition-all hover:brightness-110">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-6 border-t border-slate-800/80 text-center text-xs text-slate-500">
+                <p>&copy; 2026 NexVik - Todos los derechos reservados. Diseñado desde Huaral, Perú.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AUTH MODAL CON RECUPERACIÓN DE CONTRASEÑA Y OJO VISUALIZADOR -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-navy-900 border border-slate-700/80 rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+            <button id="close-auth-btn" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg bg-navy-800/80">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="flex border-b border-slate-800 mb-6" id="auth-tabs">
+                <button id="tab-login" class="flex-1 py-3 text-sm font-bold text-cyan-400 border-b-2 border-cyan-400">Iniciar Sesión</button>
+                <button id="tab-register" class="flex-1 py-3 text-sm font-bold text-slate-400 border-b-2 border-transparent">Crear Cuenta</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="text-xs text-slate-300 font-medium block mb-1">Correo Electrónico</label>
+                    <input type="email" id="login-email" required placeholder="tu@correo.com" class="w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-300 font-medium block mb-1">Contraseña</label>
+                    <div class="relative flex items-center">
+                        <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-navy-950 border border-slate-700 rounded-xl pl-3 pr-10 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                        <button type="button" onclick="togglePasswordVisibility('login-password', 'toggle-pass-login-icon')" class="absolute right-3 text-slate-400 hover:text-cyan-400 text-sm focus:outline-none">
+                            <i class="fa-solid fa-eye" id="toggle-pass-login-icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <button type="button" id="forgot-pass-btn" class="text-cyan-400 hover:underline">¿Olvidaste tu contraseña?</button>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-vibrant-600 to-cyan-500 text-white font-bold rounded-xl text-xs shadow-neon transition-all">
+                    Ingresar
+                </button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="register-form" class="space-y-4 hidden">
+                <div>
+                    <label class="text-xs text-slate-300 font-medium block mb-1">Nombre Completo</label>
+                    <input type="text" id="reg-name" required placeholder="Tu Nombre" class="w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-300 font-medium block mb-1">Correo Electrónico</label>
+                    <input type="email" id="reg-email" required placeholder="tu@correo.com" class="w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-300 font-medium block mb-1">Contraseña</label>
+                    <div class="relative flex items-center">
+                        <input type="password" id="reg-password" required placeholder="••••••••" class="w-full bg-navy-950 border border-slate-700 rounded-xl pl-3 pr-10 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                        <button type="button" onclick="togglePasswordVisibility('reg-password', 'toggle-pass-reg-icon')" class="absolute right-3 text-slate-400 hover:text-cyan-400 text-sm focus:outline-none">
+                            <i class="fa-solid fa-eye" id="toggle-pass-reg-icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-vibrant-600 to-cyan-500 text-white font-bold rounded-xl text-xs shadow-neon transition-all">
+                    Registrarse
+                </button>
+            </form>
+
+            <!-- RESET PASSWORD FORM -->
+            <form id="reset-form" class="space-y-4 hidden">
+                <div class="text-center mb-2">
+                    <h4 class="text-sm font-bold text-white">Restablecer Contraseña</h4>
+                    <p class="text-[11px] text-slate-400">Ingresa tu correo y te enviaremos un enlace a tu Gmail para restablecer tu contraseña.</p>
+                </div>
+                <div>
+                    <label class="text-xs text-slate-300 font-medium block mb-1">Correo Electrónico</label>
+                    <input type="email" id="reset-email" required placeholder="tu@gmail.com" class="w-full bg-navy-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-vibrant-600 to-cyan-500 text-white font-bold rounded-xl text-xs shadow-neon transition-all">
+                    Enviar Enlace a mi Gmail
+                </button>
+                <button type="button" id="back-to-login-btn" class="w-full py-2 text-xs text-slate-400 hover:text-white transition-colors text-center block">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Volver al Inicio de Sesión
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-navy-800 border border-cyan-400/40 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-cyan-400 text-lg" id="toast-icon"></i>
+        <span id="toast-message" class="text-xs font-semibold">Notificación</span>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL LÓGICA DE TIENDA, FAVORITOS Y VER CONTRASEÑA -->
+    <script>
+        const CATEGORIES = [
+            { id: 'all', name: 'Todos los Productos', icon: 'fa-border-all' },
+            { id: 'fundas', name: 'Fundas & Carcasas', icon: 'fa-mobile-screen-button' },
+            { id: 'aros', name: 'Aros de luz', icon: 'fa-circle-notch' },
+            { id: 'tripodes', name: 'Tripodes y soportes', icon: 'fa-camera' },
+            { id: 'audio', name: 'Audifonos', icon: 'fa-headphones' }
+        ];
+
+        const PRODUCTS = [
+            { id: 'nx-01', name: 'Aro LED 10 pulgadas + tripode 2.10 m', category: 'aros', price: 39.90, colors: 'Negro', image: 'imagenes/aromastripode.webp', source: 'https://todatecnologia.pe/tienda/aro-de-luz-led-10-pulgadas-tripode-2-10-metros-kit-fotografia-soporte-de-celular/' },
+            { id: 'nx-02', name: 'Aro LED 26 cm con parante y soporte', category: 'aros', price: 69.00, colors: 'Negro', image: 'imagenes/aro26cm.webp', source: 'https://www.dccasesperu.com/products/aro-luz-led-26-cm-10-pulgadas-parante-tripode' },
+            { id: 'nx-03', name: 'Streamplify Light 10 USB, aro de luz', category: 'aros', price: 89.00, colors: 'Negro', image: 'imagenes/aro10usb.jpg', source: 'https://givanperu.com/producto/aro-de-luz-streamplify-light-10-usb-tp-10-pulgadas/' },
+            { id: 'nx-04', name: 'Hi Tech aro LED 10 pulgadas con tripode 2.1 m', category: 'aros', price: 29.99, colors: 'Negro', image: 'imagenes/aro10pulgadas.jpg', source: 'https://simple.ripley.com.pe/aro-luz-led-hi-tech-10-con-tripode-21-mt-2065251936452p' },
+            { id: 'nx-05', name: 'Funda antishock con diseno para iPhone / Samsung', category: 'fundas', price: 30.00, colors: 'Lila, azul, rosado y transparente', image: 'imagenes/fundantishock.jpg', source: 'https://yurvalperu.com/' },
+            { id: 'nx-06', name: 'Funda transparente MagSafe para iPhone 17', category: 'fundas', price: 39.00, colors: 'Negro y verde', image: 'imagenes/caseiphone17.webp', source: 'https://listado.mercadolibre.com.pe/fundas-celular' },
+            { id: 'nx-07', name: 'Case Antishock Color Pro Samsung S24 Ultra', category: 'fundas', price: 59.00, colors: 'Blanco, rosa, negro, purpura y azul', image: 'imagenes/caseantishock.jpg', source: 'https://techlifestyle.pe/collections/cases-y-fundas' },
+            { id: 'nx-08', name: 'Ringke Fusion X para Samsung Galaxy S23 Ultra', category: 'fundas', price: 66.50, colors: 'Negro y transparente', image: 'imagenes/casesamsunggalaxys23ultra.webp', source: 'https://listado.mercadolibre.com.pe/fundas-celular' },
+            { id: 'nx-09', name: 'Spigen Tough Armor para Samsung Galaxy S24 Ultra', category: 'fundas', price: 169.00, colors: 'Negro, Gunmetal y verde', image: 'imagenes/casesamsunggalaxys24ultra.webp', source: 'https://techlifestyle.pe/collections/cases-y-fundas' },
+            { id: 'nx-10', name: 'Case Core X Armor MagSafe para Galaxy S25 Ultra', category: 'fundas', price: 85.00, colors: 'Negro, gris y blanco', image: 'imagenes/casesamsunggalaxys25ultra.webp', source: 'https://techlifestyle.pe/collections/cases-y-fundas' },
+            { id: 'nx-11', name: 'REDMI Buds 8 Active', category: 'audio', price: 79.00, colors: 'Negro y blanco', image: 'imagenes/audifonosredmiactive.png', source: 'https://www.mi.com/pe/use-now/' },
+            { id: 'nx-12', name: 'REDMI Buds 8 Lite', category: 'audio', price: 99.00, colors: 'Negro y blanco', image: 'imagenes/audifonosredmilite.png', source: 'https://www.mi.com/pe/use-now/' },
+            { id: 'nx-13', name: 'JBL Tune 520BT diadema Bluetooth', category: 'audio', price: 129.00, colors: 'Negro, azul y blanco', image: 'imagenes/audifonosdiadema.png', source: 'https://www.preciovivo.com/producto/jbl-tune-520/' },
+            { id: 'nx-14', name: 'Xiaomi Buds 5', category: 'audio', price: 249.00, colors: 'Negro, gris y blanco', image: 'imagenes/audifonosxiaomi.png', source: 'https://www.mi.com/pe/product/xiaomi-buds-5/buy/' },
+            { id: 'nx-15', name: 'REDMI Buds 8 Pro', category: 'audio', price: 279.00, colors: 'Negro, azul y blanco', image: 'imagenes/audifonosredmi.png', source: 'https://www.mi.com/pe/use-now/' },
+            { id: 'nx-16', name: 'Selfie stick tripode Gaucho S03, 67 cm', category: 'tripodes', price: 17.00, colors: 'Negro', image: 'imagenes/tripodepack.webp', source: 'https://feniximportperu.com/categoria/celulares-y-auto/tripodes.html' },
+            { id: 'nx-17', name: 'Tripode Bluetooth generico, 1.02 m', category: 'tripodes', price: 30.00, colors: 'Negro', image: 'imagenes/tripodearodeluz.jpg', source: 'https://feniximportperu.com/categoria/celulares-y-auto/tripodes.html' },
+            { id: 'nx-22', name: 'CLN Tech palo selfie con tripode y luz LED', category: 'tripodes', price: 19.90, colors: 'Rosado', image: 'imagenes/tripodedisparador.webp', source: 'https://www.falabella.com.pe/falabella-pe/shop/palo-para-selfie' },
+            { id: 'nx-23', name: 'Palo selfie con tripode extensible y luz', category: 'tripodes', price: 28.90, colors: 'Blanco', image: 'imagenes/tripodeexxtensible.jpg', source: 'https://www.falabella.com.pe/falabella-pe/shop/palo-selfie-tripode' },
+            { id: 'nx-18', name: 'Hoco XO-SS15 selfie stick tripode, 1.80 m', category: 'tripodes', price: 65.00, colors: 'Negro', image: 'imagenes/tripodestick.webp', source: 'https://feniximportperu.com/categoria/celulares-y-auto/tripodes.html' },
+            { id: 'nx-19', name: 'Movisun TREE T01 tripode selfie, 1.80 m', category: 'tripodes', price: 90.00, colors: 'Negro', image: 'imagenes/tripodeselfie.webp', source: 'https://feniximportperu.com/categoria/celulares-y-auto/tripodes.html' },
+            { id: 'nx-20', name: 'Gaucho GUC-520 tripode profesional, 1.50 m', category: 'tripodes', price: 100.00, colors: 'Negro', image: 'imagenes/tripodeprofesional.webp', source: 'https://feniximportperu.com/categoria/celulares-y-auto/tripodes.html' },
+            { id: 'nx-21', name: 'Ugreen LP661 tripode para celular, 1.75 m', category: 'tripodes', price: 132.00, colors: 'Negro', image: 'imagenes/tripodenegro.jpg', source: 'https://feniximportperu.com/categoria/celulares-y-auto/tripodes.html' }
+        ];
+
+        let selectedCategory = 'all';
+        let maxPrice = 500;
+        let searchQuery = '';
+        let favorites = new Set();
+        let cart = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderProducts();
+            setupFiltersAndEvents();
+            updateCartUI();
+            updateFavsUI();
+            setupContactForm();
+            setupOrderForm();
+        });
+
+        // FUNCIONALIDAD PARA MOSTRAR / OCULTAR CONTRASEÑA CON EL OJITO
+        window.togglePasswordVisibility = function(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (!input || !icon) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        };
+
+        function renderCategories() {
+            const container = document.getElementById('category-filters');
+            if (!container) return;
+
+            container.innerHTML = CATEGORIES.map(cat => {
+                const isActive = cat.id === selectedCategory;
+                const activeClass = isActive 
+                    ? 'bg-gradient-to-r from-vibrant-600 to-cyan-500 text-white font-bold shadow-neon border-cyan-400/50' 
+                    : 'bg-navy-900/60 text-slate-300 hover:bg-navy-800 hover:text-white border-slate-800';
+
+                return `
+                    <button 
+                        onclick="setCategory('${cat.id}')"
+                        class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border text-xs transition-all duration-200 group ${activeClass}"
+                    >
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid ${cat.icon} text-sm ${isActive ? 'text-white' : 'text-cyan-400 group-hover:text-cyan-300'}"></i>
+                            <span>${cat.name}</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        window.setCategory = function(catId) {
+            selectedCategory = catId;
+            renderCategories();
+            renderProducts();
+        };
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const noMsg = document.getElementById('no-products-msg');
+            if (!grid) return;
+
+            const filtered = PRODUCTS.filter(p => {
+                const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
+                const matchesPrice = p.price <= maxPrice;
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesPrice && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noMsg.classList.remove('hidden');
+            } else {
+                noMsg.classList.add('hidden');
+                grid.innerHTML = filtered.map(p => {
+                    const catObj = CATEGORIES.find(c => c.id === p.category);
+                    const isFav = favorites.has(p.id);
+                    const heartClass = isFav 
+                        ? 'fa-solid text-rose-500 fill-rose-500' 
+                        : 'fa-regular text-rose-500';
+
+                    return `
+                        <div class="glass-card rounded-2xl overflow-hidden flex flex-col p-4 space-y-3 relative group">
+                            <button 
+                                onclick="toggleFavorite('${p.id}')" 
+                                class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-navy-900/80 border border-rose-500/40 flex items-center justify-center hover:scale-110 transition-transform"
+                                title="Añadir a Favoritos"
+                            >
+                                <i class="fa-heart ${heartClass} text-base transition-colors"></i>
+                            </button>
+
+                            <img src="${p.image}" alt="${p.name}" class="h-44 object-contain rounded-xl bg-navy-950/40 p-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">${catObj ? catObj.name : 'General'}</span>
+                            <h3 class="text-sm font-bold text-white line-clamp-2">${p.name}</h3>
+                            ${p.colors ? `<p class="text-[11px] text-slate-400">Colores: ${p.colors}</p>` : ''}
+                            <a href="${p.source}" target="_blank" rel="noopener noreferrer" class="text-[10px] text-cyan-300 hover:underline">Ver referencia del precio <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            <div class="flex items-center justify-between pt-2 border-t border-slate-800 mt-auto">
+                                <span class="text-lg font-extrabold text-white">S/ ${p.price.toFixed(2)}</span>
+                                <button onclick="addToCart('${p.id}')" class="p-2.5 rounded-xl bg-vibrant-600 hover:bg-vibrant-500 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-neon">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Agregar</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        window.toggleFavorite = function(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            if (favorites.has(productId)) {
+                favorites.delete(productId);
+                showToast(`Eliminado de favoritos: ${product.name}`, 'fa-heart-crack');
+            } else {
+                favorites.add(productId);
+                showToast(`¡Añadido a favoritos! ${product.name}`, 'fa-heart');
+            }
+
+            updateFavsUI();
+            renderProducts();
+        };
+
+        function updateFavsUI() {
+            const badge = document.getElementById('favs-badge');
+            const container = document.getElementById('favs-items-container');
+
+            if (badge) badge.textContent = favorites.size;
+            if (!container) return;
+
+            const favProducts = PRODUCTS.filter(p => favorites.has(p.id));
+
+            if (favProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-slate-500">
+                        <i class="fa-regular fa-heart text-4xl mb-3 text-slate-700 block"></i>
+                        <p class="text-sm font-semibold">Aún no tienes favoritos</p>
+                        <p class="text-xs text-slate-600 mt-1">Presiona el corazón de los productos que te gusten</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = favProducts.map(item => `
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-navy-950 border border-slate-800">
+                        <img src="${item.image}" alt="${item.name}" class="w-14 h-14 object-contain bg-navy-900 rounded-lg p-1">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                            <p class="text-xs text-cyan-400 font-extrabold mt-0.5">S/ ${item.price.toFixed(2)}</p>
+                            <button onclick="addToCart('${item.id}')" class="mt-2 text-[11px] px-2.5 py-1 rounded-lg bg-vibrant-600 hover:bg-vibrant-500 text-white font-semibold transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>Agregar al carrito</span>
+                            </button>
+                        </div>
+                        <button onclick="toggleFavorite('${item.id}')" class="text-slate-500 hover:text-rose-400 p-2 text-sm transition-colors" title="Quitar de Favoritos">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        window.toggleFavsDrawer = function() {
+            const drawer = document.getElementById('favs-drawer');
+            const overlay = document.getElementById('favs-drawer-overlay');
+            if (!drawer || !overlay) return;
+
+            const isOpen = !drawer.classList.contains('translate-x-full');
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        };
+
+        window.addToCart = function(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`¡Añadido al carrito! ${product.name}`, 'fa-bag-shopping');
+        };
+
+        window.updateQuantity = function(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+
+            updateCartUI();
+        };
+
+        window.removeFromCart = function(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        };
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const cartBadge = document.getElementById('cart-badge');
+            const cartTotalPrice = document.getElementById('cart-total-price');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartBadge) cartBadge.textContent = totalItems;
+
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            if (cartTotalPrice) cartTotalPrice.textContent = `S/ ${totalAmount.toFixed(2)}`;
+
+            if (!container) return;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-slate-500">
+                        <i class="fa-solid fa-cart-flatbed text-4xl mb-3 text-slate-700 block"></i>
+                        <p class="text-sm font-semibold">Tu carrito está vacío</p>
+                        <p class="text-xs text-slate-600 mt-1">Explora productos y agrégalos aquí</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-navy-950 border border-slate-800">
+                        <img src="${item.image}" alt="${item.name}" class="w-14 h-14 object-contain bg-navy-900 rounded-lg p-1">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                            <p class="text-xs text-cyan-400 font-extrabold mt-0.5">S/ ${(item.price * item.quantity).toFixed(2)}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="updateQuantity('${item.id}', -1)" class="w-5 h-5 rounded bg-navy-800 text-slate-300 hover:bg-slate-700 flex items-center justify-center text-xs font-bold">-</button>
+                                <span class="text-xs font-bold text-white px-1">${item.quantity}</span>
+                                <button onclick="updateQuantity('${item.id}', 1)" class="w-5 h-5 rounded bg-navy-800 text-slate-300 hover:bg-slate-700 flex items-center justify-center text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="text-slate-500 hover:text-rose-400 p-2 text-sm transition-colors">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        window.toggleCartDrawer = function() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-drawer-overlay');
+            if (!drawer || !overlay) return;
+
+            const isOpen = !drawer.classList.contains('translate-x-full');
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        };
+
+        window.checkoutCart = function() {
+            if (cart.length === 0) {
+                showToast('Tu carrito esta vacio', 'fa-triangle-exclamation');
+                return;
+            }
+            const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            document.getElementById('checkout-subtotal').textContent = `S/ ${subtotal.toFixed(2)}`;
+            document.getElementById('order-status').classList.add('hidden');
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            document.getElementById('checkout-modal').classList.add('flex');
+        };
+
+        window.closeCheckoutModal = function() {
+            const modal = document.getElementById('checkout-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        };
+
+        function setupOrderForm() {
+            const form = document.getElementById('order-form');
+            const instructions = document.getElementById('payment-instructions');
+            const status = document.getElementById('order-status');
+            if (!form) return;
+
+            document.querySelectorAll('input[name="payment-method"]').forEach(option => {
+                option.addEventListener('change', () => {
+                    if (instructions) {
+                        instructions.innerHTML = option.value === 'Yape'
+                            ? '<strong class="text-white">Yape:</strong> numero 942 107 558. Espera la confirmacion del total final antes de pagar.'
+                            : '<strong class="text-white">BCP:</strong> NexVik te enviara por correo o WhatsApp el numero de cuenta y CCI para realizar la transferencia.';
+                    }
+                });
+            });
+
+            form.addEventListener('submit', event => {
+                event.preventDefault();
+                const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const payment = form.querySelector('input[name="payment-method"]:checked').value;
+                const reference = `NX-${Date.now().toString(36).toUpperCase()}`;
+                const lines = cart.map(item => `- ${item.name} x${item.quantity}: S/ ${(item.price * item.quantity).toFixed(2)}`);
+                const body = [
+                    'SOLICITUD DE PEDIDO NEXVIK',
+                    `Referencia local: ${reference}`,
+                    `Nombre: ${document.getElementById('order-name').value}`,
+                    `Correo: ${document.getElementById('order-email').value}`,
+                    `Telefono / WhatsApp: ${document.getElementById('order-phone').value}`,
+                    `Direccion: ${document.getElementById('order-address').value}`,
+                    `Metodo de pago elegido: ${payment}`,
+                    '', 'Productos:', ...lines,
+                    `Subtotal productos: S/ ${subtotal.toFixed(2)}`,
+                    'Costo de envio y total final: pendiente de confirmacion por NexVik.',
+                    'El cliente realizara el pago total anticipado despues de recibir el total final. Adjuntara el comprobante al responder.'
+                ].join('\n');
+                const subject = encodeURIComponent(`Pedido NexVik ${reference}`);
+                window.location.href = `mailto:nexvik.pe@gmail.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+                if (status) {
+                    status.textContent = `Se preparo un borrador de correo con la referencia ${reference}. Debes enviarlo desde tu aplicacion de correo. El pedido aun no fue recibido ni el pago validado; NexVik debe confirmar el envio y el total final. El seguimiento se actualizara cuando NexVik te informe el estado.`;
+                    status.classList.remove('hidden');
+                }
+            });
+        }
+
+        function setupContactForm() {
+            const form = document.getElementById('contact-form');
+            if (!form) return;
+            form.addEventListener('submit', event => {
+                event.preventDefault();
+                const name = document.getElementById('contact-name').value;
+                const email = document.getElementById('contact-email').value;
+                const message = document.getElementById('contact-message').value;
+                const subject = encodeURIComponent(`Consulta de ${name} - NexVik`);
+                const body = encodeURIComponent(`Nombre: ${name}\nCorreo: ${email}\n\nMensaje o recomendacion:\n${message}`);
+                window.location.href = `mailto:nexvik.pe@gmail.com?subject=${subject}&body=${body}`;
+                showToast('Se preparo un correo. Envialo desde tu aplicacion de email.', 'fa-envelope');
+            });
+        }
+
+        function setupFiltersAndEvents() {
+            const priceInput = document.getElementById('price-range');
+            const priceVal = document.getElementById('price-range-val');
+            if (priceInput) {
+                priceInput.addEventListener('input', (e) => {
+                    maxPrice = parseFloat(e.target.value);
+                    if (priceVal) priceVal.textContent = `S/ ${maxPrice.toFixed(2)}`;
+                    renderProducts();
+                });
+            }
+
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = e.target.value.trim();
+                    renderProducts();
+                });
+            }
+
+            // Auth tabs
+            const tabLogin = document.getElementById('tab-login');
+            const tabReg = document.getElementById('tab-register');
+            const formLogin = document.getElementById('login-form');
+            const formReg = document.getElementById('register-form');
+            const formReset = document.getElementById('reset-form');
+            const authTabs = document.getElementById('auth-tabs');
+
+            if (tabLogin && tabReg) {
+                tabLogin.onclick = () => {
+                    tabLogin.className = "flex-1 py-3 text-sm font-bold text-cyan-400 border-b-2 border-cyan-400";
+                    tabReg.className = "flex-1 py-3 text-sm font-bold text-slate-400 border-b-2 border-transparent";
+                    formLogin.classList.remove('hidden');
+                    formReg.classList.add('hidden');
+                    formReset.classList.add('hidden');
+                };
+
+                tabReg.onclick = () => {
+                    tabReg.className = "flex-1 py-3 text-sm font-bold text-cyan-400 border-b-2 border-cyan-400";
+                    tabLogin.className = "flex-1 py-3 text-sm font-bold text-slate-400 border-b-2 border-transparent";
+                    formReg.classList.remove('hidden');
+                    formLogin.classList.add('hidden');
+                    formReset.classList.add('hidden');
+                };
+            }
+
+            const forgotBtn = document.getElementById('forgot-pass-btn');
+            if (forgotBtn) {
+                forgotBtn.onclick = () => {
+                    formLogin.classList.add('hidden');
+                    formReg.classList.add('hidden');
+                    authTabs.classList.add('hidden');
+                    formReset.classList.remove('hidden');
+                };
+            }
+
+            const backBtn = document.getElementById('back-to-login-btn');
+            if (backBtn) {
+                backBtn.onclick = () => {
+                    formReset.classList.add('hidden');
+                    authTabs.classList.remove('hidden');
+                    formLogin.classList.remove('hidden');
+                };
+            }
+
+            const closeAuthBtn = document.getElementById('close-auth-btn');
+            if (closeAuthBtn) {
+                closeAuthBtn.onclick = () => document.getElementById('auth-modal').classList.add('hidden');
+            }
+        }
+
+        window.openAuthModal = function() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+        };
+
+        window.showToast = function(message, iconClass = 'fa-circle-check') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            if (!toast) return;
+            icon.className = `fa-solid ${iconClass} text-cyan-400 text-lg`;
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3500);
+        };
+    </script>
+</body>
+</html>
